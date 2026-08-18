@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="en" data-show="all">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SAY · Matemwe Secondary — AI Teacher Empowerment · Lesson 1</title>
+<style>
+:root{
+  --ink:#0A2A2E;
+  --deep:#0E4F52;
+  --sea:#147C7A;
+  --weed:#6E8B3D;
+  --sun:#E2A233;
+  --sand:#E8E1CE;
+  --shell:#FBF8F0;
+  --line:rgba(10,42,46,.16);
+  --line2:rgba(10,42,46,.30);
+  --display:"Trebuchet MS","Segoe UI",Tahoma,"Noto Sans",sans-serif;
+  --body:Georgia,"Songti SC","Times New Roman",serif;
+  --mono:"Courier New",Courier,monospace;
+  --cjk:"PingFang SC","Noto Sans CJK SC","Microsoft YaHei","Heiti SC",sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; background:var(--sand); color:var(--ink);
+  font-family:var(--body); font-size:17px; line-height:1.5;
+  padding-bottom:46px;
+  background-image:linear-gradient(180deg,rgba(20,124,122,.10) 0,rgba(20,124,122,0) 420px);
+}
+
+/* ---------- language switching ---------- */
+.l{display:none}
+body[data-show="en"] .l.en,
+body[data-show="sw"] .l.sw,
+body[data-show="zh"] .l.zh{display:inline}
+body[data-show="all"] .l{display:block}
+body[data-show="all"] .l+.l{margin-top:.28em}
+body[data-show="all"] .l::before{
+  content:attr(data-tag); font-family:var(--mono); font-size:10px;
+  letter-spacing:.14em; color:var(--sea); margin-right:.55em;
+  vertical-align:2px;
+}
+.l.zh{font-family:var(--cjk)}
+
+/* ---------- masthead ---------- */
+header{
+  background:var(--deep); color:var(--shell);
+  padding:34px 22px 0; position:relative; overflow:hidden;
+}
+.wrap{max-width:940px;margin:0 auto}
+.eyebrow{
+  font-family:var(--mono); font-size:11px; letter-spacing:.22em;
+  text-transform:uppercase; color:var(--sun);
+}
+h1{
+  font-family:var(--display); font-weight:700; letter-spacing:-.015em;
+  font-size:clamp(30px,6vw,52px); line-height:1.02; margin:.28em 0 .1em;
+  text-transform:uppercase;
+}
+h1 .sub{display:block;font-size:.46em;letter-spacing:.03em;color:#9FCFC9;font-weight:400;text-transform:none;margin-top:.5em}
+.lede{max-width:52ch;color:#CDE4DF;font-size:16px}
+.lede .l::before{color:#7FB8B2}
+.factbar{
+  display:flex; flex-wrap:wrap; gap:0 30px; margin:26px 0 0;
+  font-family:var(--mono); font-size:12px; letter-spacing:.06em; color:#9FCFC9;
+  border-top:1px solid rgba(255,255,255,.18); padding-top:12px;
+}
+.factbar b{color:var(--shell);font-weight:400}
+.reef{display:block;width:100%;height:34px;margin-top:26px}
+
+/* ---------- language toggle ---------- */
+.langbar{
+  position:sticky; top:0; z-index:40; background:var(--shell);
+  border-bottom:1px solid var(--line); padding:8px 22px;
+}
+.langbar .wrap{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.langbar span.lbl{font-family:var(--mono);font-size:10px;letter-spacing:.18em;color:var(--sea);text-transform:uppercase}
+button.lang{
+  font-family:var(--mono); font-size:12px; letter-spacing:.1em;
+  background:transparent; color:var(--ink); border:1px solid var(--line2);
+  padding:6px 12px; cursor:pointer; border-radius:0;
+}
+button.lang[aria-pressed="true"]{background:var(--ink);color:var(--shell);border-color:var(--ink)}
+button.lang:focus-visible,a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+
+/* ---------- tide line (signature) ---------- */
+.tide{background:var(--shell);border-bottom:1px solid var(--line);padding:26px 22px 22px}
+.tidehead{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--sea);margin-bottom:14px}
+.marks{display:flex;gap:6px;align-items:flex-end}
+.mark{
+  flex:1; border:none; background:transparent; cursor:pointer; padding:0;
+  text-align:left; font-family:var(--mono); color:var(--ink);
+}
+.mark .bar{
+  display:block; height:8px; background:rgba(20,124,122,.20);
+  border:1px solid rgba(20,124,122,.35); margin-bottom:7px;
+}
+.mark.done .bar{background:var(--sea);border-color:var(--sea)}
+.mark .no{font-size:11px;letter-spacing:.08em;display:block}
+.mark .tm{font-size:10px;color:var(--sea);display:block}
+.mark:hover .bar{background:var(--sun);border-color:var(--sun)}
+
+/* ---------- main ---------- */
+main{padding:0 22px}
+section{
+  background:var(--shell); border:1px solid var(--line);
+  margin:22px auto; max-width:940px; padding:26px 24px;
+}
+h2{
+  font-family:var(--display); text-transform:uppercase; letter-spacing:.01em;
+  font-size:clamp(19px,3.4vw,26px); line-height:1.12; margin:0 0 4px;
+}
+h3{font-family:var(--display);font-size:15px;letter-spacing:.06em;text-transform:uppercase;margin:22px 0 8px;color:var(--deep)}
+.slug{font-family:var(--mono);font-size:11px;letter-spacing:.16em;color:var(--sea);text-transform:uppercase;margin-bottom:10px}
+.time{
+  font-family:var(--mono); font-size:12px; letter-spacing:.08em;
+  background:var(--ink); color:var(--shell); padding:4px 9px; display:inline-block;
+}
+.dur{font-family:var(--mono);font-size:11px;color:var(--sea);letter-spacing:.08em;margin-left:8px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:16px}
+.col h4{
+  font-family:var(--mono); font-size:11px; letter-spacing:.16em; text-transform:uppercase;
+  color:var(--weed); margin:0 0 8px; border-bottom:1px solid var(--line); padding-bottom:5px;
+}
+ul{margin:0;padding-left:18px}
+li{margin-bottom:8px}
+.script{
+  border-left:3px solid var(--sun); background:rgba(226,162,51,.08);
+  padding:12px 14px; margin-top:16px; font-size:16px;
+}
+.script .tagline{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#9A6D10;margin-bottom:6px}
+.out{
+  border:1px dashed var(--weed); background:rgba(110,139,61,.07);
+  padding:12px 14px; margin-top:16px;
+}
+.out .tagline{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--weed);margin-bottom:6px}
+
+/* ---------- prompt builder ---------- */
+.builder{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}
+.field label{
+  display:block; font-family:var(--mono); font-size:11px; letter-spacing:.16em;
+  text-transform:uppercase; color:var(--deep); margin-bottom:5px;
+}
+.field textarea{
+  width:100%; min-height:78px; padding:9px 10px; font-family:var(--body); font-size:15px;
+  border:1px solid var(--line2); background:#fff; color:var(--ink); resize:vertical;
+}
+.assembled{
+  margin-top:16px; background:var(--ink); color:#DCEDE9; padding:16px 16px 14px;
+  font-family:var(--mono); font-size:13.5px; line-height:1.6; white-space:pre-wrap; word-break:break-word;
+}
+.btnrow{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
+button.act{
+  font-family:var(--mono); font-size:12px; letter-spacing:.1em; text-transform:uppercase;
+  background:var(--sea); color:#fff; border:1px solid var(--sea); padding:9px 16px; cursor:pointer;
+}
+button.act.ghost{background:transparent;color:var(--ink);border-color:var(--line2)}
+button.act:hover{background:var(--deep);border-color:var(--deep);color:#fff}
+
+/* ---------- rules / roster ---------- */
+.rules{counter-reset:r;list-style:none;padding:0;margin-top:12px}
+.rules li{counter-increment:r;padding-left:44px;position:relative;margin-bottom:16px}
+.rules li::before{
+  content:counter(r,decimal-leading-zero); position:absolute; left:0; top:0;
+  font-family:var(--mono); font-size:13px; color:#fff; background:var(--deep);
+  width:30px; height:30px; display:grid; place-items:center;
+}
+table{width:100%;border-collapse:collapse;margin-top:14px;font-family:var(--mono);font-size:13px}
+th,td{border:1px solid var(--line2);padding:10px 8px;text-align:left}
+th{background:rgba(14,79,82,.10);font-weight:400;letter-spacing:.1em;text-transform:uppercase;font-size:11px}
+td{height:38px}
+.note{font-size:14px;color:#4A6A6C;margin-top:10px}
+
+/* ---------- prize ---------- */
+.prize{background:var(--deep);color:var(--shell);border-color:var(--deep)}
+.prize h2{color:#fff}
+.prize .slug{color:var(--sun)}
+.prize .l::before{color:var(--sun)}
+
+footer{max-width:940px;margin:0 auto;padding:26px 24px 40px;font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:#4A6A6C}
+
+/* ---------- rising tide ---------- */
+.tidemeter{
+  position:fixed; left:0; right:0; bottom:0; height:34px; background:var(--shell);
+  border-top:1px solid var(--line2); z-index:50; display:flex; align-items:center;
+}
+.tidemeter .fill{position:absolute;left:0;top:0;bottom:0;width:0;background:rgba(20,124,122,.22);transition:width .45s ease}
+.tidemeter .txt{position:relative;font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--deep);padding-left:22px}
+
+@media (max-width:720px){
+  .two,.builder{grid-template-columns:1fr}
+  .marks{flex-wrap:wrap}
+  .mark{flex:0 0 calc(25% - 6px)}
+  body{font-size:16px}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .tidemeter .fill{transition:none}
+}
+@media print{
+  .langbar,.tidemeter,.btnrow,.tide{display:none}
+  body{background:#fff;padding:0}
+  section{break-inside:avoid;border-color:#999}
+  header{background:#fff;color:#000}
+  h1,.lede,.factbar,.factbar b{color:#000}
+}
+</style>
+</head>
+<body data-show="all">
+
+<header>
+  <div class="wrap">
+    <div class="eyebrow">SAY Foundation · AI Teacher Empowerment Programme</div>
+    <h1>
+      Lesson 01
+      <span class="sub">
+        <span class="l en" data-tag="EN">Matemwe Secondary School · first class</span>
+        <span class="l sw" data-tag="SW">Shule ya Sekondari Matemwe · somo la kwanza</span>
+        <span class="l zh" data-tag="ZH">马特姆韦中学 · 第一课</span>
+      </span>
+    </h1>
+    <p class="lede">
+      <span class="l en" data-tag="EN">You are not here to study AI. You are here to teach with it — and to walk out today with a lesson you will actually give this week.</span>
+      <span class="l sw" data-tag="SW">Hamko hapa kujifunza AI. Mko hapa kufundisha kwa kutumia AI — na kuondoka leo na somo mtakalofundisha wiki hii.</span>
+      <span class="l zh" data-tag="ZH">你们不是来"学AI"的，是来用AI教书的——今天离开时，每人带走一节本周就要上的课。</span>
+    </p>
+    <div class="factbar">
+      <div><b>3</b> teachers · walimu · 位教师</div>
+      <div><b>120</b> min · dakika · 分钟</div>
+      <div><b>13:00–15:00</b></div>
+      <div><b>Matemwe</b>, North Unguja</div>
+    </div>
+    <svg class="reef" viewBox="0 0 940 34" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M0,22 C60,8 120,32 190,20 C260,8 300,30 380,22 C460,14 500,32 570,22 C640,12 690,30 760,20 C830,10 890,26 940,18 L940,34 L0,34 Z" fill="#E8E1CE"/>
+      <path d="M0,22 C60,8 120,32 190,20 C260,8 300,30 380,22 C460,14 500,32 570,22 C640,12 690,30 760,20 C830,10 890,26 940,18" fill="none" stroke="#E2A233" stroke-width="1.5"/>
+    </svg>
+  </div>
+</header>
+
+<nav class="langbar" aria-label="Language">
+  <div class="wrap">
+    <span class="lbl">Lugha / 语言</span>
+    <button class="lang" data-set="all" aria-pressed="true">ALL · ZOTE · 全部</button>
+    <button class="lang" data-set="en" aria-pressed="false">ENGLISH</button>
+    <button class="lang" data-set="sw" aria-pressed="false">KISWAHILI</button>
+    <button class="lang" data-set="zh" aria-pressed="false">中文</button>
+  </div>
+</nav>
+
+<div class="tide">
+  <div class="wrap">
+    <div class="tidehead">
+      <span>Kupwa · low water · 落潮 — 13:00</span>
+      <span>Kujaa · high water · 满潮 — 15:00</span>
+    </div>
+    <div class="marks" id="marks">
+      <button class="mark" data-go="p1"><span class="bar"></span><span class="no">01</span><span class="tm">13:00</span></button>
+      <button class="mark" data-go="p2"><span class="bar"></span><span class="no">02</span><span class="tm">13:10</span></button>
+      <button class="mark" data-go="p3"><span class="bar"></span><span class="no">03</span><span class="tm">13:25</span></button>
+      <button class="mark" data-go="p4"><span class="bar"></span><span class="no">04</span><span class="tm">13:45</span></button>
+      <button class="mark" data-go="p5"><span class="bar"></span><span class="no">05</span><span class="tm">14:15</span></button>
+      <button class="mark" data-go="p6"><span class="bar"></span><span class="no">06</span><span class="tm">14:40</span></button>
+      <button class="mark" data-go="p7"><span class="bar"></span><span class="no">07</span><span class="tm">14:50</span></button>
+    </div>
+  </div>
+</div>
+
+<main>
+
+  <!-- OBJECTIVE -->
+  <section id="obj">
+    <div class="slug">The one thing · Lengo moja · 唯一目标</div>
+    <h2>
+      <span class="l en" data-tag="EN">At 15:00 every teacher leaves with three things</span>
+      <span class="l sw" data-tag="SW">Saa tisa kila mwalimu anaondoka na vitu vitatu</span>
+      <span class="l zh" data-tag="ZH">15:00，每位教师带走三样东西</span>
+    </h2>
+    <div class="two">
+      <div class="col">
+        <h4>Output · Matokeo · 成果</h4>
+        <ul>
+          <li>
+            <span class="l en" data-tag="EN">A finished lesson plan for a real class on your own timetable.</span>
+            <span class="l sw" data-tag="SW">Andalio kamili la somo halisi lililopo katika ratiba yako.</span>
+            <span class="l zh" data-tag="ZH">一份完整教案，对应你课表上的真实一课。</span>
+          </li>
+          <li>
+            <span class="l en" data-tag="EN">A one-page teaching page saved on the laptop, opening without internet.</span>
+            <span class="l sw" data-tag="SW">Ukurasa mmoja wa kufundishia uliohifadhiwa kwenye kompyuta, unaofunguka bila intaneti.</span>
+            <span class="l zh" data-tag="ZH">一张存在电脑里的教学网页，断网也能打开。</span>
+          </li>
+          <li>
+            <span class="l en" data-tag="EN">A date, written down, when you will teach it.</span>
+            <span class="l sw" data-tag="SW">Tarehe, iliyoandikwa, utakayofundisha somo hilo.</span>
+            <span class="l zh" data-tag="ZH">一个写下来的日期——你哪天上这节课。</span>
+          </li>
+        </ul>
+      </div>
+      <div class="col">
+        <h4>Not today · Si leo · 今天不做</h4>
+        <ul>
+          <li>
+            <span class="l en" data-tag="EN">No theory of artificial intelligence. No history, no vocabulary test.</span>
+            <span class="l sw" data-tag="SW">Hakuna nadharia ya akili bandia. Hakuna historia, hakuna mtihani wa msamiati.</span>
+            <span class="l zh" data-tag="ZH">不讲人工智能理论、历史，不考名词。</span>
+          </li>
+          <li>
+            <span class="l en" data-tag="EN">No slides you will never use again.</span>
+            <span class="l sw" data-tag="SW">Hakuna slaidi ambazo hamtazitumia tena.</span>
+            <span class="l zh" data-tag="ZH">不做用一次就扔的幻灯片。</span>
+          </li>
+          <li>
+            <span class="l en" data-tag="EN">No pretending. If the machine is wrong, we say so out loud.</span>
+            <span class="l sw" data-tag="SW">Hakuna kujifanya. Mashine ikikosea, tunasema wazi.</span>
+            <span class="l zh" data-tag="ZH">不装懂。机器错了，就当场说出来。</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- P1 -->
+  <section id="p1">
+    <span class="time">13:00</span><span class="dur">10 min</span>
+    <div class="slug" style="margin-top:12px">Phase 01 · Naming</div>
+    <h2>
+      <span class="l en" data-tag="EN">Who is in the room</span>
+      <span class="l sw" data-tag="SW">Nani yupo darasani</span>
+      <span class="l zh" data-tag="ZH">这间屋子里的人是谁</span>
+    </h2>
+    <div class="two">
+      <div class="col">
+        <h4>Trainer · Mkufunzi · 培训者</h4>
+        <ul>
+          <li><span class="l en" data-tag="EN">Sign the register. Hand out the one-page pre-survey (8 items) and collect it before Phase 02.</span>
+              <span class="l sw" data-tag="SW">Saini rejista. Toa dodoso la ukurasa mmoja (maswali 8) na likusanye kabla ya Awamu ya 02.</span>
+              <span class="l zh" data-tag="ZH">签到。发前测问卷（一页8题），第二阶段开始前收回。</span></li>
+          <li><span class="l en" data-tag="EN">Name each teacher by subject and form, out loud: "You teach Form 2 Biology."</span>
+              <span class="l sw" data-tag="SW">Mtaje kila mwalimu kwa somo na kidato, kwa sauti: "Wewe unafundisha Biolojia Kidato cha Pili."</span>
+              <span class="l zh" data-tag="ZH">当众点名到学科与年级："你教二年级生物。"</span></li>
+        </ul>
+      </div>
+      <div class="col">
+        <h4>Teacher · Mwalimu · 教师</h4>
+        <ul>
+          <li><span class="l en" data-tag="EN">Say the class you will teach next week and the exact topic from the syllabus.</span>
+              <span class="l sw" data-tag="SW">Taja darasa utakalofundisha wiki ijayo na mada kamili kutoka mtaala.</span>
+              <span class="l zh" data-tag="ZH">说出下周要上的班级，以及大纲里的具体课题。</span></li>
+          <li><span class="l en" data-tag="EN">Write that topic at the top of your notebook. Everything today is built on it.</span>
+              <span class="l sw" data-tag="SW">Andika mada hiyo juu ya daftari lako. Kila kitu cha leo kinajengwa juu yake.</span>
+              <span class="l zh" data-tag="ZH">把课题写在笔记本第一行。今天所有内容都围绕它。</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="script">
+      <div class="tagline">Say this · Sema hivi · 这样说</div>
+      <span class="l en" data-tag="EN">"Three teachers, one afternoon. By 15:00 the three of you will have made something your students will see. Not me — you."</span>
+      <span class="l sw" data-tag="SW">"Walimu watatu, mchana mmoja. Ifikapo saa tisa, nyinyi watatu mtakuwa mmetengeneza kitu ambacho wanafunzi wenu wataona. Si mimi — nyinyi."</span>
+      <span class="l zh" data-tag="ZH">"三位老师，一个下午。到15:00，你们三个人会做出学生真的能看到的东西。不是我做——是你们做。"</span>
+    </div>
+  </section>
+
+  <!-- P2 -->
+  <section id="p2">
+    <span class="time">13:10</span><span class="dur">15 min</span>
+    <div class="slug" style="margin-top:12px">Phase 02 · Live demonstration</div>
+    <h2>
+      <span class="l en" data-tag="EN">What it does well, what it gets wrong</span>
+      <span class="l sw" data-tag="SW">Inachofanya vizuri, na inachokosea</span>
+      <span class="l zh" data-tag="ZH">它擅长什么，它会错在哪</span>
+    </h2>
+    <div class="two">
+      <div class="col">
+        <h4>Strong · Ina nguvu · 强</h4>
+        <ul>
+          <li><span class="l en" data-tag="EN">Drafting: lesson plans, exercises, exam questions with answer keys, notes at two difficulty levels.</span>
+              <span class="l sw" data-tag="SW">Kuandaa: maandalio, mazoezi, maswali ya mtihani na majibu, madokezo ya viwango viwili.</span>
+              <span class="l zh" data-tag="ZH">起草：教案、练习、带答案的考题、两个难度层次的讲义。</span></li>
+          <li><span class="l en" data-tag="EN">Explaining one idea five different ways until one fits your class.</span>
+              <span class="l sw" data-tag="SW">Kueleza wazo moja kwa njia tano tofauti hadi mojawapo iwafae wanafunzi wako.</span>
+              <span class="l zh" data-tag="ZH">把同一个概念换五种讲法，直到有一种适合你的班。</span></li>
+          <li><span class="l en" data-tag="EN">Translating between English, Kiswahili and simple language for slow readers.</span>
+              <span class="l sw" data-tag="SW">Kutafsiri kati ya Kiingereza, Kiswahili na lugha rahisi kwa wasomaji wa polepole.</span>
+              <span class="l zh" data-tag="ZH">在英语、斯瓦希里语和"简单说法"之间互译。</span></li>
+        </ul>
+      </div>
+      <div class="col">
+        <h4>Weak · Ina udhaifu · 弱</h4>
+        <ul>
+          <li><span class="l en" data-tag="EN">Local facts: Zanzibar syllabus codes, exam formats, school dates. It will invent them confidently.</span>
+              <span class="l sw" data-tag="SW">Taarifa za hapa: misimbo ya mtaala wa Zanzibar, muundo wa mitihani, tarehe za shule. Itazibuni kwa ujasiri.</span>
+              <span class="l zh" data-tag="ZH">本地事实：桑给巴尔大纲编号、考试格式、校历——它会一本正经地编。</span></li>
+          <li><span class="l en" data-tag="EN">Knowing your students. It has never met the child in the back row.</span>
+              <span class="l sw" data-tag="SW">Kuwafahamu wanafunzi wako. Haijawahi kumwona mtoto aliyeketi mwisho.</span>
+              <span class="l zh" data-tag="ZH">了解你的学生。它没见过最后一排那个孩子。</span></li>
+          <li><span class="l en" data-tag="EN">Deciding what matters. That is the teacher's job and it stays the teacher's job.</span>
+              <span class="l sw" data-tag="SW">Kuamua kipi ni muhimu. Hiyo ni kazi ya mwalimu na itabaki kazi ya mwalimu.</span>
+              <span class="l zh" data-tag="ZH">判断什么重要。这是教师的活，永远是教师的活。</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="out">
+      <div class="tagline">Do it live · Onyesha moja kwa moja · 现场演示</div>
+      <span class="l en" data-tag="EN">Trainer: on the projector, ask for a lesson plan with a bad prompt ("teach photosynthesis"), then the same with a good prompt from Phase 03. Show both answers side by side. Say nothing — let the difference speak.</span>
+      <span class="l sw" data-tag="SW">Mkufunzi: kwenye projekta, omba andalio kwa maelekezo mabaya ("fundisha usanisinuru"), kisha lile lile kwa maelekezo mazuri ya Awamu ya 03. Onyesha majibu yote mawili pamoja. Usiseme kitu — acha tofauti izungumze.</span>
+      <span class="l zh" data-tag="ZH">培训者：用投影，先用一句糟糕的指令（"讲光合作用"）要教案，再用第三阶段的好指令要一遍。两份答案并排放。什么都别说，让差别自己说话。</span>
+    </div>
+  </section>
+
+  <!-- P3 -->
+  <section id="p3">
+    <span class="time">13:25</span><span class="dur">20 min</span>
+    <div class="slug" style="margin-top:12px">Phase 03 · The only method you must remember</div>
+    <h2>
+      <span class="l en" data-tag="EN">Role · Task · Context · Format</span>
+      <span class="l sw" data-tag="SW">Jukumu · Kazi · Mazingira · Muundo</span>
+      <span class="l zh" data-tag="ZH">角色 · 任务 · 情境 · 格式</span>
+    </h2>
+    <p>
+      <span class="l en" data-tag="EN">Four lines. Never fewer. The <b>Context</b> line is where Matemwe lives — 45 students, no laboratory, one projector, power that comes and goes. Fill the four boxes, then press Build.</span>
+      <span class="l sw" data-tag="SW">Mistari minne. Isipungue. Mstari wa <b>Mazingira</b> ndipo Matemwe ilipo — wanafunzi 45, hakuna maabara, projekta moja, umeme unaokatika. Jaza masanduku manne, kisha bonyeza Tengeneza.</span>
+      <span class="l zh" data-tag="ZH">四行，不能少。<b>情境</b>那一行就是马特姆韦本身——45个学生、没有实验室、一台投影、时有时无的电。填好四格，点"生成"。</span>
+    </p>
+
+    <div class="builder">
+      <div class="field">
+        <label for="f1">01 Role · Jukumu · 角色</label>
+        <textarea id="f1"></textarea>
+      </div>
+      <div class="field">
+        <label for="f2">02 Task · Kazi · 任务</label>
+        <textarea id="f2"></textarea>
+      </div>
+      <div class="field">
+        <label for="f3">03 Context · Mazingira · 情境</label>
+        <textarea id="f3"></textarea>
+      </div>
+      <div class="field">
+        <label for="f4">04 Format · Muundo · 格式</label>
+        <textarea id="f4"></textarea>
+      </div>
+    </div>
+
+    <div class="btnrow">
+      <button class="act" id="build">Build · Tengeneza · 生成</button>
+      <button class="act ghost" id="copy">Copy · Nakili · 复制</button>
+      <button class="act ghost" id="example">Load example · Mfano · 载入示例</button>
+      <button class="act ghost" id="clear">Clear · Futa · 清空</button>
+    </div>
+
+    <div class="assembled" id="outbox" aria-live="polite"></div>
+  </section>
+
+  <!-- P4 -->
+  <section id="p4">
+    <span class="time">13:45</span><span class="dur">30 min</span>
+    <div class="slug" style="margin-top:12px">Phase 04 · Hands on the keyboard</div>
+    <h2>
+      <span class="l en" data-tag="EN">Your own lesson plan, start to finish</span>
+      <span class="l sw" data-tag="SW">Andalio lako mwenyewe, mwanzo hadi mwisho</span>
+      <span class="l zh" data-tag="ZH">你自己的教案，从头做到尾</span>
+    </h2>
+    <div class="two">
+      <div class="col">
+        <h4>Steps · Hatua · 步骤</h4>
+        <ul>
+          <li><span class="l en" data-tag="EN">Write your four lines about the topic in your notebook — your topic, not the example.</span>
+              <span class="l sw" data-tag="SW">Andika mistari yako minne kuhusu mada yako katika daftari — mada yako, si ya mfano.</span>
+              <span class="l zh" data-tag="ZH">就你自己的课题写下四行——不是示例的课题。</span></li>
+          <li><span class="l en" data-tag="EN">Send it. Read the answer to the end before you judge it.</span>
+              <span class="l sw" data-tag="SW">Ituma. Soma jibu hadi mwisho kabla ya kulihukumu.</span>
+              <span class="l zh" data-tag="ZH">发出去。读完整个回答再下判断。</span></li>
+          <li><span class="l en" data-tag="EN">Ask for one change, in one sentence: "The examples are foreign — use fishing, seaweed and the tide instead."</span>
+              <span class="l sw" data-tag="SW">Omba mabadiliko moja, kwa sentensi moja: "Mifano ni ya kigeni — tumia uvuvi, mwani na maji kujaa badala yake."</span>
+              <span class="l zh" data-tag="ZH">用一句话要一次修改："例子太外国了，换成捕鱼、海藻和潮汐。"</span></li>
+          <li><span class="l en" data-tag="EN">Repeat until you would sign your name at the bottom.</span>
+              <span class="l sw" data-tag="SW">Rudia hadi ukubali kuweka jina lako chini yake.</span>
+              <span class="l zh" data-tag="ZH">反复改，直到你愿意在末尾签自己的名字。</span></li>
+        </ul>
+      </div>
+      <div class="col">
+        <h4>Trainer watches for · Mkufunzi aangalie · 培训者盯住</h4>
+        <ul>
+          <li><span class="l en" data-tag="EN">The teacher who accepts the first answer. Push them to ask for a second version.</span>
+              <span class="l sw" data-tag="SW">Mwalimu anayekubali jibu la kwanza. Msukume aombe toleo la pili.</span>
+              <span class="l zh" data-tag="ZH">谁接受了第一版答案，就推他要第二版。</span></li>
+          <li><span class="l en" data-tag="EN">The teacher who is stuck typing. Ask them to speak the four lines aloud, then type.</span>
+              <span class="l sw" data-tag="SW">Mwalimu aliyekwama kuandika. Mwambie aseme mistari minne kwa sauti, kisha aandike.</span>
+              <span class="l zh" data-tag="ZH">谁卡在打字上，就让他先把四行说出来，再打。</span></li>
+          <li><span class="l en" data-tag="EN">Hands off the keyboard. Never type for them, not once.</span>
+              <span class="l sw" data-tag="SW">Usiguse kibodi. Usiwaandikie, hata mara moja.</span>
+              <span class="l zh" data-tag="ZH">别碰键盘。一次也别替他们打。</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="out">
+      <div class="tagline">Checkpoint · Kituo · 检查点</div>
+      <span class="l en" data-tag="EN">14:15 — three lesson plans exist, one per teacher, each with the teacher's own edits. Nobody moves on before this is true.</span>
+      <span class="l sw" data-tag="SW">14:15 — maandalio matatu yapo, moja kwa kila mwalimu, kila moja likiwa na marekebisho yake mwenyewe. Hakuna anayeendelea kabla ya hili kutimia.</span>
+      <span class="l zh" data-tag="ZH">14:15——三份教案到位，一人一份，每份都有本人的修改。不到这一步，谁都不往下走。</span>
+    </div>
+  </section>
+
+  <!-- P5 -->
+  <section id="p5">
+    <span class="time">14:15</span><span class="dur">25 min</span>
+    <div class="slug" style="margin-top:12px">Phase 05 · From paper to projector</div>
+    <h2>
+      <span class="l en" data-tag="EN">Turn the plan into a page the students can see</span>
+      <span class="l sw" data-tag="SW">Geuza andalio kuwa ukurasa wanafunzi wanaoweza kuuona</span>
+      <span class="l zh" data-tag="ZH">把教案变成学生能看见的一页</span>
+    </h2>
+    <p>
+      <span class="l en" data-tag="EN">This is the moment the work becomes real. Paste the lesson plan you just made, then send this instruction:</span>
+      <span class="l sw" data-tag="SW">Hapa ndipo kazi inakuwa halisi. Bandika andalio ulilotengeneza, kisha tuma maelekezo haya:</span>
+      <span class="l zh" data-tag="ZH">这一步，工作才真正落地。把刚做好的教案粘贴进去，然后发这条指令：</span>
+    </p>
+    <div class="assembled">Turn this lesson plan into ONE single HTML file I can open on a laptop with no internet.
+Rules: no images from the web, no external links, large text readable from the back of a classroom, a title, the objectives, the five teaching steps, three questions for the students, and a summary box at the end.
+Give me the complete file in one block so I can copy it all at once.</div>
+    <div class="two">
+      <div class="col">
+        <h4>Save it · Ihifadhi · 保存</h4>
+        <ul>
+          <li><span class="l en" data-tag="EN">Copy the whole block. Open Notepad / TextEdit. Paste.</span>
+              <span class="l sw" data-tag="SW">Nakili kila kitu. Fungua Notepad / TextEdit. Bandika.</span>
+              <span class="l zh" data-tag="ZH">全选复制。打开记事本／文本编辑。粘贴。</span></li>
+          <li><span class="l en" data-tag="EN">Save as <b>somo1.html</b> on the Desktop. The name must end in .html</span>
+              <span class="l sw" data-tag="SW">Hifadhi kama <b>somo1.html</b> kwenye Desktop. Jina lazima liishie na .html</span>
+              <span class="l zh" data-tag="ZH">存到桌面，命名 <b>somo1.html</b>。后缀必须是 .html</span></li>
+          <li><span class="l en" data-tag="EN">Double-click it. It opens in the browser. Turn off the WiFi and open it again — it still works. That file is yours forever.</span>
+              <span class="l sw" data-tag="SW">Bofya mara mbili. Unafunguka kwenye kivinjari. Zima WiFi ufungue tena — bado unafanya kazi. Faili hiyo ni yako milele.</span>
+              <span class="l zh" data-tag="ZH">双击打开，浏览器里就能看。关掉WiFi再打开，照样能用。这个文件永远是你的。</span></li>
+        </ul>
+      </div>
+      <div class="col">
+        <h4>If it breaks · Ikiharibika · 出问题时</h4>
+        <ul>
+          <li><span class="l en" data-tag="EN">Page is blank: you missed the first or last line when copying. Copy again.</span>
+              <span class="l sw" data-tag="SW">Ukurasa mtupu: umeacha mstari wa kwanza au wa mwisho wakati wa kunakili. Nakili tena.</span>
+              <span class="l zh" data-tag="ZH">页面空白：复制时漏了第一行或最后一行。重新复制。</span></li>
+          <li><span class="l en" data-tag="EN">Code shows as text: the file was saved as .txt. Rename it, ending .html</span>
+              <span class="l sw" data-tag="SW">Msimbo unaonekana kama maandishi: faili imehifadhiwa kama .txt. Badilisha jina liishie .html</span>
+              <span class="l zh" data-tag="ZH">显示成一堆代码：文件存成了 .txt。改名，后缀改成 .html</span></li>
+          <li><span class="l en" data-tag="EN">Power cut: the file is already on the disk. Nothing is lost. This is why we save first.</span>
+              <span class="l sw" data-tag="SW">Umeme umekatika: faili tayari ipo kwenye diski. Hakuna kilichopotea. Ndiyo maana tunahifadhi kwanza.</span>
+              <span class="l zh" data-tag="ZH">停电：文件已经在硬盘里了，什么都没丢。所以我们先存盘。</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- P6 -->
+  <section id="p6">
+    <span class="time">14:40</span><span class="dur">10 min</span>
+    <div class="slug" style="margin-top:12px">Phase 06 · The three rules</div>
+    <h2>
+      <span class="l en" data-tag="EN">Before it goes in front of children</span>
+      <span class="l sw" data-tag="SW">Kabla haijafika mbele ya watoto</span>
+      <span class="l zh" data-tag="ZH">在拿到孩子面前之前</span>
+    </h2>
+    <ol class="rules">
+      <li>
+        <span class="l en" data-tag="EN"><b>Check every fact you would be embarrassed to get wrong.</b> Dates, formulas, definitions, anything with a number. If you cannot verify it, take it out.</span>
+        <span class="l sw" data-tag="SW"><b>Hakiki kila ukweli ambao ungeaibika kuukosea.</b> Tarehe, fomula, fasili, kitu chochote chenye namba. Usipoweza kuthibitisha, kiondoe.</span>
+        <span class="l zh" data-tag="ZH"><b>凡是错了会丢脸的事实，一律核对。</b>日期、公式、定义、任何带数字的东西。查不到出处，就删掉。</span>
+      </li>
+      <li>
+        <span class="l en" data-tag="EN"><b>The syllabus decides, not the machine.</b> Open the Zanzibar syllabus next to the screen. If the AI added a topic that is not examined, cut it.</span>
+        <span class="l sw" data-tag="SW"><b>Mtaala ndio unaoamua, si mashine.</b> Fungua mtaala wa Zanzibar kando ya skrini. AI ikiongeza mada isiyoulizwa mtihani, ikate.</span>
+        <span class="l zh" data-tag="ZH"><b>说了算的是大纲，不是机器。</b>把桑给巴尔教学大纲摊在屏幕旁边。AI加了不考的内容，砍掉。</span>
+      </li>
+      <li>
+        <span class="l en" data-tag="EN"><b>No student's name, photo, illness or family situation ever goes into the AI.</b> Describe the situation without the person: "a Form 2 student who reads slowly".</span>
+        <span class="l sw" data-tag="SW"><b>Jina, picha, ugonjwa au hali ya familia ya mwanafunzi haviingii kwenye AI kamwe.</b> Eleza hali bila mtu: "mwanafunzi wa Kidato cha Pili anayesoma polepole".</span>
+        <span class="l zh" data-tag="ZH"><b>学生的姓名、照片、病情、家庭情况，永远不输入AI。</b>只描述情况，不带人："一名阅读较慢的二年级学生"。</span>
+      </li>
+    </ol>
+  </section>
+
+  <!-- P7 -->
+  <section id="p7">
+    <span class="time">14:50</span><span class="dur">10 min</span>
+    <div class="slug" style="margin-top:12px">Phase 07 · Show and commit</div>
+    <h2>
+      <span class="l en" data-tag="EN">Two minutes each, then a date on the board</span>
+      <span class="l sw" data-tag="SW">Dakika mbili kila mmoja, kisha tarehe ubaoni</span>
+      <span class="l zh" data-tag="ZH">每人两分钟，然后把日期写到黑板上</span>
+    </h2>
+    <div class="two">
+      <div class="col">
+        <h4>In the room · Darasani · 现场</h4>
+        <ul>
+          <li><span class="l en" data-tag="EN">Each teacher puts their page on the projector and teaches 60 seconds of it to the other two.</span>
+              <span class="l sw" data-tag="SW">Kila mwalimu aweke ukurasa wake kwenye projekta na afundishe sekunde 60 kwa wenzake wawili.</span>
+              <span class="l zh" data-tag="ZH">每位教师把自己的页面投上去，给另外两人讲60秒。</span></li>
+          <li><span class="l en" data-tag="EN">Write on the board: name, class, topic, the date you will teach it. Photograph the board.</span>
+              <span class="l sw" data-tag="SW">Andika ubaoni: jina, darasa, mada, tarehe utakayofundisha. Piga picha ubao.</span>
+              <span class="l zh" data-tag="ZH">黑板上写：姓名、班级、课题、开课日期。给黑板拍张照。</span></li>
+        </ul>
+      </div>
+      <div class="col">
+        <h4>Homework · Kazi ya nyumbani · 作业</h4>
+        <ul>
+          <li><span class="l en" data-tag="EN">Teach the lesson before we meet again.</span>
+              <span class="l sw" data-tag="SW">Fundisha somo kabla hatujakutana tena.</span>
+              <span class="l zh" data-tag="ZH">下次见面前，把这节课上掉。</span></li>
+          <li><span class="l en" data-tag="EN">Bring three sentences: what the students did, what surprised you, what failed.</span>
+              <span class="l sw" data-tag="SW">Leta sentensi tatu: wanafunzi walifanya nini, kilichokushangaza, na kilichoshindikana.</span>
+              <span class="l zh" data-tag="ZH">带三句话来：学生做了什么、什么让你意外、什么没成。</span></li>
+          <li><span class="l en" data-tag="EN">Bring one thing the AI got wrong. There will be one. Finding it is the skill.</span>
+              <span class="l sw" data-tag="SW">Leta kitu kimoja AI ilichokosea. Kitakuwepo. Kukigundua ndio ujuzi wenyewe.</span>
+              <span class="l zh" data-tag="ZH">带一处AI犯的错。一定有。找得出来，才是本事。</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="script">
+      <div class="tagline">Close with this · Malizia hivi · 收尾这样说</div>
+      <span class="l en" data-tag="EN">"Nobody taught you this in college, and next month you will be the one teaching it to the teacher next door."</span>
+      <span class="l sw" data-tag="SW">"Hakuna aliyewafundisha haya chuoni, na mwezi ujao ninyi ndio mtakaomfundisha mwalimu wa darasa la pili."</span>
+      <span class="l zh" data-tag="ZH">"这些没人在师范教过你们。下个月，教隔壁老师的人，就是你们。"</span>
+    </div>
+  </section>
+
+  <!-- ROSTER -->
+  <section id="roster">
+    <div class="slug">Register · Rejista · 签到表</div>
+    <h2>
+      <span class="l en" data-tag="EN">Three teachers, Lesson 01</span>
+      <span class="l sw" data-tag="SW">Walimu watatu, Somo la 01</span>
+      <span class="l zh" data-tag="ZH">三位教师 · 第一课</span>
+    </h2>
+    <table>
+      <tr>
+        <th>#</th>
+        <th>Name · Jina · 姓名</th>
+        <th>Subject / Form · Somo / Kidato · 学科／年级</th>
+        <th>Topic today · Mada ya leo · 今日课题</th>
+        <th>Teaching date · Tarehe · 开课日期</th>
+      </tr>
+      <tr><td>01</td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>02</td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>03</td><td></td><td></td><td></td><td></td></tr>
+    </table>
+    <p class="note">
+      <span class="l en" data-tag="EN">Pre-survey collected in Phase 01 · post-survey after the taught lesson · both one page, eight items.</span>
+      <span class="l sw" data-tag="SW">Dodoso la awali linakusanywa Awamu ya 01 · dodoso la baadaye baada ya somo kufundishwa · yote ukurasa mmoja, maswali manane.</span>
+      <span class="l zh" data-tag="ZH">前测在第一阶段收 · 后测在课上完之后 · 均为一页八题。</span>
+    </p>
+  </section>
+
+  <!-- LAB + PRIZE -->
+  <section class="prize">
+    <div class="slug">What SAY provides · SAY inatoa · SAY 提供</div>
+    <h2>
+      <span class="l en" data-tag="EN">The lab is open. Practice is free.</span>
+      <span class="l sw" data-tag="SW">Maabara ipo wazi. Mazoezi ni bure.</span>
+      <span class="l zh" data-tag="ZH">实验室开着，练习免费。</span>
+    </h2>
+    <div class="two">
+      <div class="col">
+        <h4 style="color:var(--sun);border-color:rgba(255,255,255,.25)">Open hours · Saa · 开放时间</h4>
+        <ul>
+          <li><span class="l en" data-tag="EN">Monday to Thursday, 13:00–15:00. Computers, WiFi and a trainer, at no cost, for any teacher who comes.</span>
+              <span class="l sw" data-tag="SW">Jumatatu hadi Alhamisi, saa 7 hadi saa 9 mchana. Kompyuta, WiFi na mkufunzi, bila malipo, kwa mwalimu yeyote atakayefika.</span>
+              <span class="l zh" data-tag="ZH">周一至周四 13:00–15:00。电脑、WiFi、指导老师，全部免费，任何教师都可以来。</span></li>
+          <li><span class="l en" data-tag="EN">Bring your own timetable and syllabus. Work on next week's real lesson, not exercises.</span>
+              <span class="l sw" data-tag="SW">Leta ratiba na mtaala wako. Fanyia kazi somo halisi la wiki ijayo, si mazoezi.</span>
+              <span class="l zh" data-tag="ZH">带上你的课表和大纲。做下周真要上的课，不做练习题。</span></li>
+        </ul>
+      </div>
+      <div class="col">
+        <h4 style="color:var(--sun);border-color:rgba(255,255,255,.25)">15 September · Septemba 15 · 9月15日</h4>
+        <ul>
+          <li><span class="l en" data-tag="EN">AI Teaching Competition. Two winning teachers each receive a laptop computer.</span>
+              <span class="l sw" data-tag="SW">Shindano la Ufundishaji kwa AI. Walimu wawili washindi kila mmoja atapata kompyuta mpakato.</span>
+              <span class="l zh" data-tag="ZH">AI教学比赛。两位获胜教师各得一台笔记本电脑。</span></li>
+          <li><span class="l en" data-tag="EN">You enter with a lesson you actually taught. Today's work is already your entry.</span>
+              <span class="l sw" data-tag="SW">Unashiriki kwa somo ulilofundisha kweli. Kazi ya leo tayari ni ushiriki wako.</span>
+              <span class="l zh" data-tag="ZH">参赛作品必须是你真上过的一节课。今天做的，已经就是你的参赛作品。</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  SAY FOUNDATION · SINO-AFRICA YOUTH FOUNDATION · AI TEACHER EMPOWERMENT PROGRAMME<br>
+  MATEMWE SECONDARY SCHOOL · NORTH UNGUJA, ZANZIBAR · LESSON 01 OF THE FIRST CYCLE
+</footer>
+
+<div class="tidemeter" aria-hidden="true">
+  <div class="fill" id="fill"></div>
+  <div class="txt"><span id="pct">0</span>% · KUPWA → KUJAA · 潮位</div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* language */
+  var body = document.body;
+  var btns = document.querySelectorAll("button.lang");
+  btns.forEach(function(b){
+    b.addEventListener("click", function(){
+      btns.forEach(function(x){ x.setAttribute("aria-pressed","false"); });
+      b.setAttribute("aria-pressed","true");
+      body.setAttribute("data-show", b.getAttribute("data-set"));
+      render();
+    });
+  });
+
+  /* tide marks */
+  var marks = Array.prototype.slice.call(document.querySelectorAll(".mark"));
+  function tide(){
+    var done = marks.filter(function(m){ return m.classList.contains("done"); }).length;
+    var pct = Math.round(done / marks.length * 100);
+    document.getElementById("fill").style.width = pct + "%";
+    document.getElementById("pct").textContent = pct;
+  }
+  marks.forEach(function(m){
+    m.addEventListener("click", function(){
+      m.classList.toggle("done");
+      tide();
+      var t = document.getElementById(m.getAttribute("data-go"));
+      if (t) t.scrollIntoView({block:"start"});
+    });
+  });
+
+  /* prompt builder */
+  var LAB = {
+    en: {role:"ROLE", task:"TASK", ctx:"CONTEXT", fmt:"FORMAT"},
+    sw: {role:"JUKUMU", task:"KAZI", ctx:"MAZINGIRA", fmt:"MUUNDO"},
+    zh: {role:"角色", task:"任务", ctx:"情境", fmt:"格式"},
+    all:{role:"ROLE / JUKUMU / 角色", task:"TASK / KAZI / 任务", ctx:"CONTEXT / MAZINGIRA / 情境", fmt:"FORMAT / MUUNDO / 格式"}
+  };
+  var EX = {
+    en: {
+      f1:"You are an experienced Form 2 Biology teacher working in a rural secondary school in Zanzibar.",
+      f2:"Write a 40-minute lesson plan on photosynthesis.",
+      f3:"45 students in one room, no laboratory and no chemicals, one projector, frequent power cuts. Teaching in English, key terms also in Kiswahili. Use examples from the sea, seaweed farming and village gardens.",
+      f4:"Give me: 3 objectives, 5 teaching steps with minutes, 2 board diagrams described in words, 5 questions with answers, and one homework task that needs no printing."
+    },
+    sw: {
+      f1:"Wewe ni mwalimu mwenye uzoefu wa Biolojia Kidato cha Pili katika shule ya sekondari ya kijijini Zanzibar.",
+      f2:"Andika andalio la somo la dakika 40 kuhusu usanisinuru.",
+      f3:"Wanafunzi 45 katika chumba kimoja, hakuna maabara wala kemikali, projekta moja, umeme unakatika mara kwa mara. Kufundisha kwa Kiingereza, istilahi muhimu pia kwa Kiswahili. Tumia mifano ya bahari, kilimo cha mwani na bustani za kijijini.",
+      f4:"Nipe: malengo 3, hatua 5 za ufundishaji na dakika, michoro 2 ya ubaoni iliyoelezwa kwa maneno, maswali 5 na majibu, na kazi moja ya nyumbani isiyohitaji kuchapishwa."
+    },
+    zh: {
+      f1:"你是桑给巴尔一所乡村中学有经验的二年级生物教师。",
+      f2:"写一份40分钟的光合作用教案。",
+      f3:"一间教室45名学生，没有实验室也没有试剂，一台投影仪，经常停电。用英语授课，关键术语附斯瓦希里语。例子取自大海、海藻养殖和村里的菜园。",
+      f4:"请给我：3条教学目标、带时间的5个教学步骤、2幅用文字描述的板书图、5道题及答案，以及一项不需要打印的家庭作业。"
+    }
+  };
+  EX.all = EX.en;
+
+  var ids = ["f1","f2","f3","f4"];
+  function val(id){ return (document.getElementById(id).value || "").trim(); }
+  function lang(){ var s = body.getAttribute("data-show"); return LAB[s] ? s : "all"; }
+
+  function render(){
+    var L = LAB[lang()];
+    var box = document.getElementById("outbox");
+    var lines = [];
+    if (val("f1")) lines.push(L.role + ": " + val("f1"));
+    if (val("f2")) lines.push(L.task + ": " + val("f2"));
+    if (val("f3")) lines.push(L.ctx  + ": " + val("f3"));
+    if (val("f4")) lines.push(L.fmt  + ": " + val("f4"));
+    box.textContent = lines.length
+      ? lines.join("\n\n")
+      : "— fill the four boxes above · jaza masanduku manne juu · 填上面四格 —";
+  }
+
+  document.getElementById("build").addEventListener("click", render);
+  ids.forEach(function(id){ document.getElementById(id).addEventListener("input", render); });
+
+  document.getElementById("example").addEventListener("click", function(){
+    var e = EX[lang()];
+    ids.forEach(function(id){ document.getElementById(id).value = e[id]; });
+    render();
+  });
+
+  document.getElementById("clear").addEventListener("click", function(){
+    ids.forEach(function(id){ document.getElementById(id).value = ""; });
+    render();
+  });
+
+  document.getElementById("copy").addEventListener("click", function(){
+    var txt = document.getElementById("outbox").textContent;
+    var btn = this, old = btn.textContent;
+    function ok(){ btn.textContent = "Copied ✓ Imenakiliwa ✓ 已复制 ✓"; setTimeout(function(){ btn.textContent = old; }, 1600); }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(txt).then(ok, fallback);
+    } else { fallback(); }
+    function fallback(){
+      var ta = document.createElement("textarea");
+      ta.value = txt; ta.style.position = "fixed"; ta.style.opacity = "0";
+      document.body.appendChild(ta); ta.select();
+      try { document.execCommand("copy"); ok(); } catch(e){ btn.textContent = "Select and copy manually"; setTimeout(function(){ btn.textContent = old; }, 2000); }
+      document.body.removeChild(ta);
+    }
+  });
+
+  render();
+  tide();
+})();
+</script>
+</body>
+</html>
